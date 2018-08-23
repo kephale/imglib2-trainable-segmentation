@@ -80,6 +80,12 @@ public class FeatureCalculationBenchmark {
 		return calculateFeature(GroupedFeatures.gradient());
 	}
 
+	@Benchmark
+	public Object laplacian()
+	{
+		return calculateFeature(GroupedFeatures.laplacian());
+	}
+
 	private Object calculateFeature(FeatureSetting setting) {
 		return Parallelization.runSingleThreaded( () -> {
 			final FeatureSettings featureSettings = new FeatureSettings( GlobalSettings.default3dSettings(), setting);
