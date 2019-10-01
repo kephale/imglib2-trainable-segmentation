@@ -57,7 +57,7 @@ public class FeatureStack3DTest {
 
 	@Test
 	public void testGaussian() {
-		testFeature(60, FeatureStack3D.GAUSSIAN, new FeatureSetting(GaussFeature.class, "scaleFactor", 1.0));
+		testFeature(60, FeatureStack3D.GAUSSIAN, new FeatureSetting(GaussFeature.class));
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class FeatureStack3DTest {
 
 	@Test
 	public void testDOG() {
-		testFeatureIgnoreAttributes( 50, FeatureStack3D.DOG, new FeatureSetting(DifferenceOfGaussiansFeature.class, "scaleFactor", 1.0));
+		testFeatureIgnoreAttributes( 50, FeatureStack3D.DOG, new FeatureSetting(DifferenceOfGaussiansFeature.class));
 	}
 
 	private void testFeature(int featureID, Class<? extends FeatureOp> featureClass) {
@@ -138,7 +138,7 @@ public class FeatureStack3DTest {
 	}
 
 	private FeatureCalculator setupFeatureCalculator(FeatureSetting featureSetting) {
-		FeatureSettings featureSettings = new FeatureSettings(GlobalSettings.default3dSettings(), Arrays.asList(SingleFeatures.identity(), featureSetting));
+		FeatureSettings featureSettings = new FeatureSettings(GlobalSettings.default3d().build(), Arrays.asList(SingleFeatures.identity(), featureSetting));
 		return new FeatureCalculator(Utils.ops(), featureSettings);
 	}
 
