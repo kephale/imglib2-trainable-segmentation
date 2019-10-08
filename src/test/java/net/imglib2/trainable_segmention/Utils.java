@@ -161,7 +161,7 @@ public class Utils {
 		double meanSquareError = meanSquareError(expected, actual);
 		if(meanSquareError == 0.0)
 			return Float.POSITIVE_INFINITY;
-		return (20 * Math.log10(max(expected)) - 10 * Math.log10(meanSquareError));
+		return (20 * Math.log10(maxAbs(expected)) - 10 * Math.log10(meanSquareError));
 	}
 
 	private static <S extends ComplexType<S>, T extends ComplexType<T>> double meanSquareError(
@@ -186,10 +186,10 @@ public class Utils {
 		return v * v;
 	}
 
-	private static <T extends ComplexType<T>> double max(RandomAccessibleInterval<T> a) {
+	private static <T extends ComplexType<T>> double maxAbs(RandomAccessibleInterval<T> a) {
 		IntervalView<T> interval = Views.interval(a, a);
 		T result = interval.firstElement().createVariable();
-		interval.forEach(x -> result.setReal(Math.max(result.getRealDouble(), x.getRealDouble())));
+		interval.forEach(x -> result.setReal(Math.max(result.getRealDouble(), Math.abs(x.getRealDouble()))));
 		return result.getRealDouble();
 	}
 
