@@ -11,6 +11,7 @@ import net.imglib2.trainable_segmention.pixel_feature.filter.dog.DifferenceOfGau
 import net.imglib2.trainable_segmention.pixel_feature.filter.gauss.GaussFeature;
 import net.imglib2.trainable_segmention.pixel_feature.filter.hessian.Hessian3DFeature;
 import net.imglib2.trainable_segmention.pixel_feature.filter.laplacian.LaplacianFeature;
+import net.imglib2.trainable_segmention.pixel_feature.filter.structure.StructureFeature3D;
 import net.imglib2.trainable_segmention.pixel_feature.settings.FeatureSetting;
 import net.imglib2.trainable_segmention.pixel_feature.settings.FeatureSettings;
 import net.imglib2.trainable_segmention.pixel_feature.settings.GlobalSettings;
@@ -93,6 +94,11 @@ public class FeatureStack3DTest {
 	@Test
 	public void testDOG() {
 		testFeatureIgnoreAttributes( 50, FeatureStack3D.DOG, new FeatureSetting(DifferenceOfGaussiansFeature.class));
+	}
+
+	@Test
+	public void testStructure() {
+		testFeature(50, FeatureStack3D.STRUCTURE, GroupedFeatures.structure());
 	}
 
 	private void testFeature(int featureID, Class<? extends FeatureOp> featureClass) {

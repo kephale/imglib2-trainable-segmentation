@@ -101,7 +101,8 @@ public class FeatureInput {
 		if( convolutions.isEmpty() )
 			return gauss(sigma);
 		final RandomAccessibleInterval<DoubleType> result = create(target);
-		Convolution.concat(convolutions.toArray(new Convolution[0])).process(extendedGauss(sigma), result);
+		Convolution<Object> convolution = Convolution.concat(convolutions.toArray(new Convolution[0]));
+		convolution.process(extendedGauss(sigma), result);
 		return result;
 	}
 
