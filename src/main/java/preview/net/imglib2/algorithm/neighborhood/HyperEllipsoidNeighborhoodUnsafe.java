@@ -35,12 +35,18 @@
 package preview.net.imglib2.algorithm.neighborhood;
 
 import net.imglib2.RandomAccess;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
 
 public final class HyperEllipsoidNeighborhoodUnsafe<T> extends HyperEllipsoidNeighborhood<T>
 {
-	public static <T> NeighborhoodFactory<T> factory( final long[] radius )
+	public static NeighborhoodFactory factory( final long[] radius )
 	{
-		return (position, sourceRandomAccess) -> new HyperEllipsoidNeighborhoodUnsafe<T>(position, radius, sourceRandomAccess);
+		return new NeighborhoodFactory() {
+			@Override
+			public <T> Neighborhood<T> create(long[] position, RandomAccess<T> sourceRandomAccess) {
+				return new HyperEllipsoidNeighborhoodUnsafe<>(position, radius, sourceRandomAccess);
+			}
+		};
 	}
 
 	private final LocalCursor theCursor;

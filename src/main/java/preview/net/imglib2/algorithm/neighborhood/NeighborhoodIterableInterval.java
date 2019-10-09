@@ -15,9 +15,9 @@ public final class NeighborhoodIterableInterval< T > extends AbstractInterval im
 
 	private final long size;
 
-	final NeighborhoodFactory< T > factory;
+	final NeighborhoodFactory factory;
 
-	public NeighborhoodIterableInterval(final RandomAccessibleInterval<T> source, final NeighborhoodFactory<T> factory)
+	public NeighborhoodIterableInterval(final RandomAccessibleInterval<T> source, final NeighborhoodFactory factory)
 	{
 		super( source );
 		this.source = source;

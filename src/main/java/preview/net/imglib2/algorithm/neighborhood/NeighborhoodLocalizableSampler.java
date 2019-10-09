@@ -48,13 +48,13 @@ public abstract class NeighborhoodLocalizableSampler< T > extends AbstractEuclid
 
 	private final Interval sourceInterval;
 
-	private final NeighborhoodFactory< T > neighborhoodFactory;
+	private final NeighborhoodFactory neighborhoodFactory;
 
 	private final Neighborhood< T > currentNeighborhood;
 
 	protected final long[] currentPos;
 
-	public NeighborhoodLocalizableSampler( final RandomAccessible<T> source, final NeighborhoodFactory<T> factory, Interval accessInterval )
+	public NeighborhoodLocalizableSampler( final RandomAccessible<T> source, final NeighborhoodFactory factory, Interval accessInterval )
 	{
 		super( source.numDimensions() );
 		this.source = source;

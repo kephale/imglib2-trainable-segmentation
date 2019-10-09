@@ -44,7 +44,6 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RealPositionable;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -56,9 +55,14 @@ import java.util.Iterator;
  */
 public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implements Neighborhood<T>
 {
-	public static <T> NeighborhoodFactory<T> factory( long[] radius )
+	public static NeighborhoodFactory factory( long[] radius )
 	{
-		return (position, sourceRandomAccess) -> new HyperEllipsoidNeighborhood<T>(position, radius, sourceRandomAccess);
+		return new NeighborhoodFactory() {
+			@Override
+			public <T> Neighborhood<T> create(long[] position, RandomAccess<T> sourceRandomAccess) {
+				return new HyperEllipsoidNeighborhood<>(position, radius, sourceRandomAccess);
+			}
+		};
 	}
 
 	private final RandomAccess<T> sourceRandomAccess;

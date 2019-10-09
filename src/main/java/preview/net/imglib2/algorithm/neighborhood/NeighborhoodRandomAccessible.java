@@ -10,9 +10,9 @@ public final class NeighborhoodRandomAccessible< T > extends AbstractEuclideanSp
 {
 	private final RandomAccessible< T > source;
 
-	private final NeighborhoodFactory< T > factory;
+	private final NeighborhoodFactory factory;
 
-	public NeighborhoodRandomAccessible(final RandomAccessible<T> source, final NeighborhoodFactory<T> factory)
+	public NeighborhoodRandomAccessible(final RandomAccessible<T> source, final NeighborhoodFactory factory)
 	{
 		super( source.numDimensions() );
 		this.source = source;

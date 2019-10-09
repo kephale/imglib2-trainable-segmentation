@@ -53,7 +53,7 @@ public final class NeighborhoodCursor< T > extends NeighborhoodLocalizableSample
 
 	private long maxIndexOnLine;
 
-	public NeighborhoodCursor(final RandomAccessibleInterval<T> source, final NeighborhoodFactory<T> factory)
+	public NeighborhoodCursor(final RandomAccessibleInterval<T> source, final NeighborhoodFactory factory)
 	{
 		super( source, factory, source );
 

@@ -34,15 +34,13 @@
 
 package preview.net.imglib2.algorithm.neighborhood;
 
-import java.util.Arrays;
-
-import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
-import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.util.ConstantUtils;
 
 /**
  * A factory for Accessibles on hyper-sphere neighboorhoods.
@@ -60,27 +58,27 @@ public class HyperEllipsoidShape implements Shape
 	}
 
 	@Override
-	public < T > IterableInterval< Neighborhood< T > > neighborhoods( final RandomAccessibleInterval< T > source )
+	public < T > NeighborhoodIterableInterval<T> neighborhoods( final RandomAccessibleInterval< T > source )
 	{
-		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhoodUnsafe.< T >factory( radius ) );
+		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhoodUnsafe.factory( radius ) );
 	}
 
 	@Override
-	public < T > RandomAccessible< Neighborhood < T > > neighborhoodsRandomAccessible( final RandomAccessible< T > source )
+	public < T > NeighborhoodRandomAccessible< T > neighborhoodsRandomAccessible( final RandomAccessible< T > source )
 	{
-		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhoodUnsafe.< T >factory( radius ) );
+		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhoodUnsafe.factory( radius ) );
 	}
 
 	@Override
-	public < T > IterableInterval< Neighborhood< T > > neighborhoodsSafe( final RandomAccessibleInterval< T > source )
+	public < T > NeighborhoodIterableInterval< T > neighborhoodsSafe( final RandomAccessibleInterval< T > source )
 	{
-		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhood.< T >factory( radius ) );
+		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhood.factory( radius ) );
 	}
 
 	@Override
-	public < T > RandomAccessible< Neighborhood< T > > neighborhoodsRandomAccessibleSafe( final RandomAccessible< T > source )
+	public < T > NeighborhoodRandomAccessible< T > neighborhoodsRandomAccessibleSafe( final RandomAccessible< T > source )
 	{
-		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhood.< T >factory( radius ) );
+		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhood.factory( radius ) );
 	}
 
 	/**
@@ -99,10 +97,8 @@ public class HyperEllipsoidShape implements Shape
 
 	@Override
 	public Interval getStructuringElementBoundingBox(final int numDimensions) {
-		final long[] min = new long[numDimensions];
-		Arrays.setAll(min,  i -> -radius[i]);
-		final long[] max = radius;
-
-		return new FinalInterval(min, max);
+		RandomAccess<Void> dummyRandomAccess = ConstantUtils.constantRandomAccessible((Void) null, numDimensions).randomAccess();
+		Neighborhood<Void> neighborhood = HyperEllipsoidNeighborhood.factory(radius).create(new long[numDimensions], dummyRandomAccess);
+		return neighborhood.getStructuringElementBoundingBox();
 	}
 }

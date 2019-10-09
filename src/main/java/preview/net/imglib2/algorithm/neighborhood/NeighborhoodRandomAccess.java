@@ -42,12 +42,12 @@ import net.imglib2.algorithm.neighborhood.Neighborhood;
 
 public class NeighborhoodRandomAccess< T > extends NeighborhoodLocalizableSampler< T > implements RandomAccess<Neighborhood< T >>
 {
-	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory<T> factory)
+	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory factory)
 	{
 		super( source, factory, null );
 	}
 
-	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory<T> factory, final Interval interval)
+	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory factory, final Interval interval)
 	{
 		super( source, factory, interval );
 	}

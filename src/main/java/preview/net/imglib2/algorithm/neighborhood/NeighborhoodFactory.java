@@ -47,8 +47,6 @@ import java.util.Arrays;
  *
  * @author Tobias Pietzsch
  */
-public interface NeighborhoodFactory<T>
-{
-	public Neighborhood<T> create(final long[] position, final RandomAccess<T> sourceRandomAccess);
-
+public interface NeighborhoodFactory {
+	<T> Neighborhood<T> create(final long[] position, final RandomAccess<T> sourceRandomAccess);
 }
