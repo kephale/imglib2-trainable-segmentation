@@ -44,15 +44,15 @@ import net.imglib2.algorithm.neighborhood.Neighborhood;
 
 public abstract class HyperEllipsoidNeighborhoodLocalizableSampler< T > extends AbstractEuclideanSpace implements Localizable, Sampler<Neighborhood< T >>
 {
-	protected final RandomAccessible< T > source;
+	private final RandomAccessible< T > source;
 
-	protected final long[] radius;
+	private final long[] radius;
 
-	protected final Interval sourceInterval;
+	private final Interval sourceInterval;
 
-	protected final HyperEllipsoidNeighborhoodFactory< T > neighborhoodFactory;
+	private final HyperEllipsoidNeighborhoodFactory< T > neighborhoodFactory;
 
-	protected final Neighborhood< T > currentNeighborhood;
+	private final Neighborhood< T > currentNeighborhood;
 
 	protected final long[] currentPos;
 

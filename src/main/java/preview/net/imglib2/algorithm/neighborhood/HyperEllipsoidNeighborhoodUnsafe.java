@@ -49,25 +49,12 @@ public final class HyperEllipsoidNeighborhoodUnsafe<T> extends HyperEllipsoidNei
 			{
 				return new HyperEllipsoidNeighborhoodUnsafe<T>(position, radius, sourceRandomAccess);
 			}
-
-			@Override
-			public Neighborhood<T> create(final long[] position, final long radius, final RandomAccess<T>
-					sourceRandomAccess)
-			{
-				return new HyperEllipsoidNeighborhoodUnsafe<T>(position, radius, sourceRandomAccess);
-			}
 		};
 	}
 
 	private final LocalCursor theCursor;
 
 	private final LocalCursor firstElementCursor;
-
-	HyperEllipsoidNeighborhoodUnsafe(final long[] position, final long radius, final RandomAccess<T>
-			sourceRandomAccess)
-	{
-		this(position, HyperEllipsoidNeighborhoodFactory.arrayOf(radius, position.length), sourceRandomAccess);
-	}
 
 	HyperEllipsoidNeighborhoodUnsafe(final long[] position, final long[] radius, final RandomAccess<T>
 			sourceRandomAccess)

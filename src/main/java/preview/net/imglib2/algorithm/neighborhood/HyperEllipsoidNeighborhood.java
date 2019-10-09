@@ -66,13 +66,6 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 			{
 				return new HyperEllipsoidNeighborhood<T>(position, radius, sourceRandomAccess);
 			}
-
-			@Override
-			public Neighborhood<T> create(final long[] position, final long radius, final RandomAccess<T>
-					sourceRandomAccess)
-			{
-				return new HyperEllipsoidNeighborhood<T>(position, radius, sourceRandomAccess);
-			}
 		};
 	}
 
@@ -88,7 +81,7 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 
 	private final Interval structuringElementBoundingBox;
 
-	final static protected long[] arrayOf(final long x, final int size)
+	private static long[] arrayOf(final long x, final int size)
 	{
 		final long[] array = new long[size];
 		Arrays.fill(array, x);
@@ -119,11 +112,6 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 		}
 
 		structuringElementBoundingBox = new FinalInterval(min, max);
-	}
-
-	HyperEllipsoidNeighborhood(final long[] position, final long radius, final RandomAccess<T> sourceRandomAccess)
-	{
-		this(position, arrayOf(radius, position.length), sourceRandomAccess);
 	}
 
 	/**
