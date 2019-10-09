@@ -39,7 +39,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.util.IntervalIndexer;
 
-public final class HyperEllipsoidNeighborhoodCursor< T > extends HyperEllipsoidNeighborhoodLocalizableSampler< T > implements Cursor< Neighborhood< T > >
+public final class NeighborhoodCursor< T > extends NeighborhoodLocalizableSampler< T > implements Cursor< Neighborhood< T > >
 {
 	private final long[] dimensions;
 
@@ -53,9 +53,9 @@ public final class HyperEllipsoidNeighborhoodCursor< T > extends HyperEllipsoidN
 
 	private long maxIndexOnLine;
 
-	public HyperEllipsoidNeighborhoodCursor( final RandomAccessibleInterval< T > source, final long radius[], final HyperEllipsoidNeighborhoodFactory< T > factory )
+	public NeighborhoodCursor(final RandomAccessibleInterval<T> source, final NeighborhoodFactory<T> factory)
 	{
-		super( source, radius, factory, source );
+		super( source, factory, source );
 
 		dimensions = new long[ n ];
 		min = new long[ n ];
@@ -70,7 +70,7 @@ public final class HyperEllipsoidNeighborhoodCursor< T > extends HyperEllipsoidN
 		reset();
 	}
 
-	private HyperEllipsoidNeighborhoodCursor( final HyperEllipsoidNeighborhoodCursor< T > c )
+	private NeighborhoodCursor( final NeighborhoodCursor< T > c )
 	{
 		super( c );
 		dimensions = c.dimensions.clone();
@@ -150,13 +150,13 @@ public final class HyperEllipsoidNeighborhoodCursor< T > extends HyperEllipsoidN
 	}
 
 	@Override
-	public HyperEllipsoidNeighborhoodCursor< T > copy()
+	public NeighborhoodCursor< T > copy()
 	{
-		return new HyperEllipsoidNeighborhoodCursor< T >( this );
+		return new NeighborhoodCursor< T >( this );
 	}
 
 	@Override
-	public HyperEllipsoidNeighborhoodCursor< T > copyCursor()
+	public NeighborhoodCursor< T > copyCursor()
 	{
 		return copy();
 	}

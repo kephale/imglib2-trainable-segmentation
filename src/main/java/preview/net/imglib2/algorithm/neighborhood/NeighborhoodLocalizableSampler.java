@@ -42,25 +42,22 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.Sampler;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 
-public abstract class HyperEllipsoidNeighborhoodLocalizableSampler< T > extends AbstractEuclideanSpace implements Localizable, Sampler<Neighborhood< T >>
+public abstract class NeighborhoodLocalizableSampler< T > extends AbstractEuclideanSpace implements Localizable, Sampler<Neighborhood< T >>
 {
 	private final RandomAccessible< T > source;
 
-	private final long[] radius;
-
 	private final Interval sourceInterval;
 
-	private final HyperEllipsoidNeighborhoodFactory< T > neighborhoodFactory;
+	private final NeighborhoodFactory< T > neighborhoodFactory;
 
 	private final Neighborhood< T > currentNeighborhood;
 
 	protected final long[] currentPos;
 
-	public HyperEllipsoidNeighborhoodLocalizableSampler( final RandomAccessible< T > source, final long[] radius, final HyperEllipsoidNeighborhoodFactory< T > factory, Interval accessInterval )
+	public NeighborhoodLocalizableSampler( final RandomAccessible<T> source, final NeighborhoodFactory<T> factory, Interval accessInterval )
 	{
 		super( source.numDimensions() );
 		this.source = source;
-		this.radius = radius;
 		neighborhoodFactory = factory;
 		currentPos = new long[ n ];
 
@@ -75,28 +72,28 @@ public abstract class HyperEllipsoidNeighborhoodLocalizableSampler< T > extends 
 		{
 			final long[] accessMin = new long[ n ];
 			final long[] accessMax = new long[ n ];
+			Interval boundingBox = neighborhoodFactory.create(new long[n], source.randomAccess()).getStructuringElementBoundingBox();
 			accessInterval.min( accessMin );
 			accessInterval.max( accessMax );
 			for ( int d = 0; d < n; ++d )
 			{
-				accessMin[ d ] -= radius[ d ];
-				accessMax[ d ] += radius[ d ];
+				accessMin[ d ] += boundingBox.min( d );
+				accessMax[ d ] += boundingBox.max( d );
 			}
 			sourceInterval = new FinalInterval( accessMin, accessMax );
 		}
-		currentNeighborhood = neighborhoodFactory.create( currentPos, radius,
+		currentNeighborhood = neighborhoodFactory.create( currentPos,
 				sourceInterval == null ? source.randomAccess() : source.randomAccess( sourceInterval ) );
 	}
 
-	protected HyperEllipsoidNeighborhoodLocalizableSampler( final HyperEllipsoidNeighborhoodLocalizableSampler< T > c )
+	protected NeighborhoodLocalizableSampler( final NeighborhoodLocalizableSampler< T > c )
 	{
 		super( c.n );
 		source = c.source;
-		radius = c.radius;
 		sourceInterval = c.sourceInterval;
 		neighborhoodFactory = c.neighborhoodFactory;
 		currentPos = c.currentPos.clone();
-		currentNeighborhood = neighborhoodFactory.create( currentPos, radius,
+		currentNeighborhood = neighborhoodFactory.create( currentPos,
 				sourceInterval == null ? source.randomAccess() : source.randomAccess( sourceInterval ) );
 	}
 

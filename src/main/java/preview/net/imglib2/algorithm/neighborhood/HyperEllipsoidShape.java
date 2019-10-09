@@ -35,16 +35,10 @@
 package preview.net.imglib2.algorithm.neighborhood;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
-import net.imglib2.AbstractEuclideanSpace;
-import net.imglib2.AbstractInterval;
-import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
-import net.imglib2.FlatIterationOrder;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
@@ -66,27 +60,27 @@ public class HyperEllipsoidShape implements Shape
 	}
 
 	@Override
-	public < T > NeighborhoodsIterableInterval< T > neighborhoods( final RandomAccessibleInterval< T > source )
+	public < T > IterableInterval< Neighborhood< T > > neighborhoods( final RandomAccessibleInterval< T > source )
 	{
-		return new NeighborhoodsIterableInterval< T >( source, radius, HyperEllipsoidNeighborhoodUnsafe.< T >factory() );
+		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhoodUnsafe.< T >factory( radius ) );
 	}
 
 	@Override
-	public < T > NeighborhoodsAccessible< T > neighborhoodsRandomAccessible( final RandomAccessible< T > source )
+	public < T > RandomAccessible< Neighborhood < T > > neighborhoodsRandomAccessible( final RandomAccessible< T > source )
 	{
-		return new NeighborhoodsAccessible< T >( source, radius, HyperEllipsoidNeighborhoodUnsafe.< T >factory() );
+		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhoodUnsafe.< T >factory( radius ) );
 	}
 
 	@Override
-	public < T > NeighborhoodsIterableInterval< T > neighborhoodsSafe( final RandomAccessibleInterval< T > source )
+	public < T > IterableInterval< Neighborhood< T > > neighborhoodsSafe( final RandomAccessibleInterval< T > source )
 	{
-		return new NeighborhoodsIterableInterval< T >( source, radius, HyperEllipsoidNeighborhood.< T >factory() );
+		return new NeighborhoodIterableInterval< T >( source, HyperEllipsoidNeighborhood.< T >factory( radius ) );
 	}
 
 	@Override
-	public < T > NeighborhoodsAccessible< T > neighborhoodsRandomAccessibleSafe( final RandomAccessible< T > source )
+	public < T > RandomAccessible< Neighborhood< T > > neighborhoodsRandomAccessibleSafe( final RandomAccessible< T > source )
 	{
-		return new NeighborhoodsAccessible< T >( source, radius, HyperEllipsoidNeighborhood.< T >factory() );
+		return new NeighborhoodRandomAccessible< T >( source, HyperEllipsoidNeighborhood.< T >factory( radius ) );
 	}
 
 	/**
@@ -101,95 +95,6 @@ public class HyperEllipsoidShape implements Shape
 	public String toString()
 	{
 		return "HyperEllipsoidShape, radius = " + radius;
-	}
-
-	public static final class NeighborhoodsIterableInterval< T > extends AbstractInterval implements IterableInterval< Neighborhood< T > >
-	{
-		final RandomAccessibleInterval< T > source;
-
-		final long[] radius;
-
-		final long size;
-
-		final HyperEllipsoidNeighborhoodFactory< T > factory;
-
-		public NeighborhoodsIterableInterval( final RandomAccessibleInterval< T > source, final long[] radius, final HyperEllipsoidNeighborhoodFactory< T > factory )
-		{
-			super( source );
-			this.source = source;
-			this.radius = radius;
-			this.factory = factory;
-
-			long s = source.dimension( 0 );
-			for ( int d = 1; d < n; ++d )
-				s *= source.dimension( d );
-			size = s;
-		}
-
-		@Override
-		public long size()
-		{
-			return size;
-		}
-
-		@Override
-		public Neighborhood< T > firstElement()
-		{
-			return cursor().next();
-		}
-
-		@Override
-		public Object iterationOrder()
-		{
-			return new FlatIterationOrder( this );
-		}
-
-		@Override
-		public Iterator< Neighborhood< T >> iterator()
-		{
-			return cursor();
-		}
-
-		@Override
-		public Cursor< Neighborhood< T >> cursor()
-		{
-			return new HyperEllipsoidNeighborhoodCursor< T >( source, radius, factory );
-		}
-
-		@Override
-		public Cursor< Neighborhood< T >> localizingCursor()
-		{
-			return cursor();
-		}
-	}
-
-	public static final class NeighborhoodsAccessible< T > extends AbstractEuclideanSpace implements RandomAccessible< Neighborhood< T > >
-	{
-		final RandomAccessible< T > source;
-
-		final long[] radius;
-
-		final HyperEllipsoidNeighborhoodFactory< T > factory;
-
-		public NeighborhoodsAccessible( final RandomAccessible< T > source, final long[] radius, final HyperEllipsoidNeighborhoodFactory< T > factory )
-		{
-			super( source.numDimensions() );
-			this.source = source;
-			this.radius = radius;
-			this.factory = factory;
-		}
-
-		@Override
-		public RandomAccess< Neighborhood< T >> randomAccess()
-		{
-			return new HyperEllipsoidNeighborhoodRandomAccess< T >( source, radius, factory );
-		}
-
-		@Override
-		public RandomAccess<Neighborhood< T >> randomAccess( final Interval interval )
-		{
-			return new HyperEllipsoidNeighborhoodRandomAccess< T >( source, radius, factory, interval );
-		}
 	}
 
 	@Override

@@ -40,19 +40,19 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessible;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 
-public class HyperEllipsoidNeighborhoodRandomAccess< T > extends HyperEllipsoidNeighborhoodLocalizableSampler< T > implements RandomAccess<Neighborhood< T >>
+public class NeighborhoodRandomAccess< T > extends NeighborhoodLocalizableSampler< T > implements RandomAccess<Neighborhood< T >>
 {
-	public HyperEllipsoidNeighborhoodRandomAccess( final RandomAccessible< T > source, final long[] radius, final HyperEllipsoidNeighborhoodFactory< T > factory )
+	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory<T> factory)
 	{
-		super( source, radius, factory, null );
+		super( source, factory, null );
 	}
 
-	public HyperEllipsoidNeighborhoodRandomAccess( final RandomAccessible< T > source, final long[] radius, final HyperEllipsoidNeighborhoodFactory< T > factory, final Interval interval )
+	public NeighborhoodRandomAccess(final RandomAccessible<T> source, final NeighborhoodFactory<T> factory, final Interval interval)
 	{
-		super( source, radius, factory, interval );
+		super( source, factory, interval );
 	}
 
-	private HyperEllipsoidNeighborhoodRandomAccess( final HyperEllipsoidNeighborhoodRandomAccess< T > c )
+	private NeighborhoodRandomAccess( final NeighborhoodRandomAccess< T > c )
 	{
 		super( c );
 	}
@@ -136,13 +136,13 @@ public class HyperEllipsoidNeighborhoodRandomAccess< T > extends HyperEllipsoidN
 	}
 
 	@Override
-	public HyperEllipsoidNeighborhoodRandomAccess< T > copy()
+	public NeighborhoodRandomAccess< T > copy()
 	{
-		return new HyperEllipsoidNeighborhoodRandomAccess< T >( this );
+		return new NeighborhoodRandomAccess< T >( this );
 	}
 
 	@Override
-	public HyperEllipsoidNeighborhoodRandomAccess< T > copyRandomAccess()
+	public NeighborhoodRandomAccess< T > copyRandomAccess()
 	{
 		return copy();
 	}

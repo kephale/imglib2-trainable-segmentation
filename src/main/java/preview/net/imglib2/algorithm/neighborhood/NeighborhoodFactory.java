@@ -47,15 +47,8 @@ import java.util.Arrays;
  *
  * @author Tobias Pietzsch
  */
-public interface HyperEllipsoidNeighborhoodFactory<T>
+public interface NeighborhoodFactory<T>
 {
-	public Neighborhood<T> create(final long[] position, final long[] radius, final RandomAccess<T>
-			sourceRandomAccess);
+	public Neighborhood<T> create(final long[] position, final RandomAccess<T> sourceRandomAccess);
 
-	static public long[] arrayOf(final long x, final int size)
-	{
-		final long[] array = new long[size];
-		Arrays.fill(array, x);
-		return array;
-	}
 }

@@ -56,17 +56,9 @@ import java.util.Iterator;
  */
 public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implements Neighborhood<T>
 {
-	public static <T> HyperEllipsoidNeighborhoodFactory<T> factory()
+	public static <T> NeighborhoodFactory<T> factory( long[] radius )
 	{
-		return new HyperEllipsoidNeighborhoodFactory<T>()
-		{
-			@Override
-			public Neighborhood<T> create(final long[] position, final long[] radius, final RandomAccess<T>
-					sourceRandomAccess)
-			{
-				return new HyperEllipsoidNeighborhood<T>(position, radius, sourceRandomAccess);
-			}
-		};
+		return (position, sourceRandomAccess) -> new HyperEllipsoidNeighborhood<T>(position, radius, sourceRandomAccess);
 	}
 
 	private final RandomAccess<T> sourceRandomAccess;
@@ -80,13 +72,6 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 	private final long size;
 
 	private final Interval structuringElementBoundingBox;
-
-	private static long[] arrayOf(final long x, final int size)
-	{
-		final long[] array = new long[size];
-		Arrays.fill(array, x);
-		return array;
-	}
 
 	HyperEllipsoidNeighborhood(final long[] position, final long[] radius, final RandomAccess<T> sourceRandomAccess)
 	{
