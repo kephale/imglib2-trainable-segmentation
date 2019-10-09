@@ -50,9 +50,9 @@ import net.imglib2.util.ConstantUtils;
  */
 public class HyperEllipsoidShape implements Shape
 {
-	private final long[] radius;
+	private final double[] radius;
 
-	public HyperEllipsoidShape( final long[] radius )
+	public HyperEllipsoidShape( final double[] radius )
 	{
 		this.radius = radius;
 	}
@@ -84,9 +84,9 @@ public class HyperEllipsoidShape implements Shape
 	/**
 	 * @return The radius of this shape.
 	 */
-	public long[] getRadius()
+	public double[] getRadius()
 	{
-		return radius;
+		return radius.clone();
 	}
 
 	@Override

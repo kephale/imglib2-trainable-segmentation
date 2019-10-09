@@ -39,7 +39,7 @@ import net.imglib2.algorithm.neighborhood.Neighborhood;
 
 public final class HyperEllipsoidNeighborhoodUnsafe<T> extends HyperEllipsoidNeighborhood<T>
 {
-	public static NeighborhoodFactory factory( final long[] radius )
+	public static NeighborhoodFactory factory( final double[] radius )
 	{
 		return new NeighborhoodFactory() {
 			@Override
@@ -53,7 +53,7 @@ public final class HyperEllipsoidNeighborhoodUnsafe<T> extends HyperEllipsoidNei
 
 	private final LocalCursor firstElementCursor;
 
-	HyperEllipsoidNeighborhoodUnsafe(final long[] position, final long[] radius, final RandomAccess<T>
+	HyperEllipsoidNeighborhoodUnsafe(final long[] position, final double[] radius, final RandomAccess<T>
 			sourceRandomAccess)
 	{
 		super(position, radius, sourceRandomAccess);

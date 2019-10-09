@@ -55,7 +55,7 @@ import java.util.Iterator;
  */
 public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implements Neighborhood<T>
 {
-	public static NeighborhoodFactory factory( long[] radius )
+	public static NeighborhoodFactory factory( double[] radius )
 	{
 		return new NeighborhoodFactory() {
 			@Override
@@ -71,22 +71,28 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 
 	private final double[] radiusRatii;
 
+	private final double lastRadius;
+
 	private final int maxDim;
 
 	private final long size;
 
 	private final Interval structuringElementBoundingBox;
 
-	HyperEllipsoidNeighborhood(final long[] position, final long[] radius, final RandomAccess<T> sourceRandomAccess)
+	HyperEllipsoidNeighborhood(final long[] position, final double[] radii, final RandomAccess<T> sourceRandomAccess)
 	{
 		super(position);
 		this.sourceRandomAccess = sourceRandomAccess;
-		this.radii = radius;
+		this.radii = new long[radii.length];
+		for (int i = 0; i < radii.length; i++) {
+			this.radii[i] = (long) radii[i];
+		}
 		maxDim = n - 1;
+		lastRadius = radii[maxDim];
 		radiusRatii = new double[maxDim];
 		for (int d = 0; d < maxDim; ++d)
 		{
-			radiusRatii[d] = (double) radius[d] / (double) radius[d + 1];
+			radiusRatii[d] = (double) radii[d] / (double) radii[d + 1];
 		}
 
 		size = computeSize();
@@ -96,8 +102,8 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 
 		for (int d = 0; d < n; d++)
 		{
-			min[d] = -radius[d];
-			max[d] = radius[d];
+			min[d] = - this.radii[d];
+			max[d] = this.radii[d];
 		}
 
 		structuringElementBoundingBox = new FinalInterval(min, max);
@@ -232,7 +238,7 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 
 			source.setPosition(position[maxDim] - radii[maxDim] - 1, maxDim);
 
-			r[maxDim] = radii[maxDim];
+			r[maxDim] = lastRadius;
 			ri[maxDim] = radii[maxDim];
 			s[maxDim] = 1 + 2 * radii[maxDim];
 		}
@@ -240,7 +246,12 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 		@Override
 		public boolean hasNext()
 		{
-			return s[maxDim] > 0;
+			if( s[0] > 0 )
+				return true;
+			for (int d = 1; d < n; ++d)
+				if( s[d] > 0 )
+					return true;
+			return false;
 		}
 
 		@Override
@@ -329,54 +340,6 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 	}
 
 	@Override
-	public double realMin(final int d)
-	{
-		return position[d] - radii[d];
-	}
-
-	@Override
-	public void realMin(final double[] min)
-	{
-		for (int d = 0; d < min.length; d++)
-		{
-			min[d] = position[d] - radii[d];
-		}
-	}
-
-	@Override
-	public void realMin(final RealPositionable min)
-	{
-		for (int d = 0; d < min.numDimensions(); d++)
-		{
-			min.setPosition(position[d] - radii[d], d);
-		}
-	}
-
-	@Override
-	public double realMax(final int d)
-	{
-		return position[d] + radii[d];
-	}
-
-	@Override
-	public void realMax(final double[] max)
-	{
-		for (int d = 0; d < max.length; d++)
-		{
-			max[d] = position[d] + radii[d];
-		}
-	}
-
-	@Override
-	public void realMax(final RealPositionable max)
-	{
-		for (int d = 0; d < max.numDimensions(); d++)
-		{
-			max.setPosition(position[d] + radii[d], d);
-		}
-	}
-
-	@Override
 	public Iterator<T> iterator()
 	{
 		return cursor();
@@ -389,57 +352,11 @@ public class HyperEllipsoidNeighborhood<T> extends AbstractLocalizable implement
 	}
 
 	@Override
-	public void min(final long[] min)
-	{
-		for (int d = 0; d < min.length; d++)
-		{
-			min[d] = position[d] - radii[d];
-		}
-	}
-
-	@Override
-	public void min(final Positionable min)
-	{
-		for (int d = 0; d < min.numDimensions(); d++)
-		{
-			min.setPosition(position[d] - radii[d], d);
-		}
-	}
-
-	@Override
 	public long max(final int d)
 	{
 		return position[d] + radii[d];
 	}
 
-	@Override
-	public void max(final long[] max)
-	{
-		for (int d = 0; d < max.length; d++)
-		{
-			max[d] = position[d] + radii[d];
-		}
-	}
-
-	@Override
-	public void max(final Positionable max)
-	{
-		for (int d = 0; d < max.numDimensions(); d++)
-		{
-			max.setPosition(position[d] + radii[d], d);
-		}
-	}
-
-	@Override
-	public void dimensions(final long[] dimensions)
-	{
-		for (int d = 0; d < dimensions.length; d++)
-		{
-			dimensions[d] = 2 * radii[d] + 1;
-		}
-	}
-
-	@Override
 	public long dimension(final int d)
 	{
 		return 2 * radii[d] + 1;
