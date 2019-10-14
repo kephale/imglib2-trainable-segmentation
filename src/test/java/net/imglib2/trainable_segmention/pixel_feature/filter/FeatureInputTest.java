@@ -67,7 +67,7 @@ public class FeatureInputTest {
 
 	@Test
 	public void testGaussCache() {
-		assertSame(cache.gauss(1.0), cache.gauss(1.0));
+		assertSame(cache.extendedGauss(1.0), cache.extendedGauss(1.0));
 		assertNotSame(cache.gauss(2.0), cache.gauss(1.0));
 	}
 

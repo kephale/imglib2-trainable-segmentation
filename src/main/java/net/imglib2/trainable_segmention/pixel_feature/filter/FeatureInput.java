@@ -67,7 +67,7 @@ public class FeatureInput {
 		return Views.interval(extendedGauss(sigma), target);
 	}
 
-	private RandomAccessibleInterval<DoubleType> extendedGauss(double sigma) {
+	RandomAccessibleInterval<DoubleType> extendedGauss(double sigma) {
 		return gaussCache.computeIfAbsent(sigma, this::calculateGauss);
 	}
 
@@ -93,12 +93,12 @@ public class FeatureInput {
 		List<Convolution> convolutions = new ArrayList<>();
 		for (int i = 0; i < orders.length; i++) {
 			int order = orders[i];
-			if( order != 0 ) {
+			if (order != 0) {
 				Kernel1D multiply = multiply(SIMPLE_KERNELS.get(order), Math.pow(pixelSize[i], -order));
 				convolutions.add(SeparableKernelConvolution.convolution1d(multiply, i));
 			}
 		}
-		if( convolutions.isEmpty() )
+		if (convolutions.isEmpty())
 			return gauss(sigma);
 		final RandomAccessibleInterval<DoubleType> result = create(target);
 		Convolution<Object> convolution = Convolution.concat(convolutions.toArray(new Convolution[0]));
