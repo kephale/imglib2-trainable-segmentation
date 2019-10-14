@@ -125,7 +125,7 @@ public class Utils {
 	}
 
 	public static <T extends NumericType<T>> void showDifference(RandomAccessibleInterval<T> expectedImage, RandomAccessibleInterval<T> resultImage) {
-		assertTrue(Intervals.equals(expectedImage, resultImage));
+		assertIntervalEquals(expectedImage, resultImage);
 		ImageJFunctions.show(tile(expectedImage, resultImage, subtract(expectedImage, resultImage)));
 	}
 
@@ -155,8 +155,8 @@ public class Utils {
 		return Utils.loadImagePlusFromResource(s);
 	}
 
-	public static <S extends ComplexType<S>, T extends ComplexType<T>> double psnr(
-			RandomAccessibleInterval<S> expected, RandomAccessibleInterval<T> actual)
+	public static double psnr( RandomAccessibleInterval<? extends ComplexType<?>> expected,
+			RandomAccessibleInterval<? extends ComplexType<?>> actual)
 	{
 		double meanSquareError = meanSquareError(expected, actual);
 		if(meanSquareError == 0.0)
@@ -164,8 +164,8 @@ public class Utils {
 		return (20 * Math.log10(maxAbs(expected)) - 10 * Math.log10(meanSquareError));
 	}
 
-	private static <S extends ComplexType<S>, T extends ComplexType<T>> double meanSquareError(
-			RandomAccessibleInterval<S> a, RandomAccessibleInterval<T> b)
+	private static double meanSquareError( RandomAccessibleInterval<? extends ComplexType<?>> a,
+			RandomAccessibleInterval<? extends ComplexType<?>> b)
 	{
 		if(!Intervals.equals(a, b))
 			throw new IllegalArgumentException("both arguments must be the same interval" +
@@ -186,11 +186,11 @@ public class Utils {
 		return v * v;
 	}
 
-	private static <T extends ComplexType<T>> double maxAbs(RandomAccessibleInterval<T> a) {
-		IntervalView<T> interval = Views.interval(a, a);
-		T result = interval.firstElement().createVariable();
-		interval.forEach(x -> result.setReal(Math.max(result.getRealDouble(), Math.abs(x.getRealDouble()))));
-		return result.getRealDouble();
+	private static double maxAbs(RandomAccessibleInterval<? extends ComplexType<?>> a) {
+		double result = 0;
+		for( ComplexType<?> pixel : Views.iterable(a))
+			result = Math.max(result, Math.abs(pixel.getRealDouble()));
+		return result;
 	}
 
 	public static void showPsnr(RandomAccessibleInterval<FloatType> expected, RandomAccessibleInterval<FloatType> actual) {
@@ -220,8 +220,9 @@ public class Utils {
 		return "[" + joiner.toString() + "]";
 	}
 
-	public static <S extends ComplexType<S>, T extends ComplexType<T>> void assertImagesEqual(double expectedPsnr,
-																							  RandomAccessibleInterval<S> expected, RandomAccessibleInterval<T> actual)
+	public static void assertImagesEqual(double expectedPsnr,
+			RandomAccessibleInterval<? extends ComplexType<?>> expected,
+			RandomAccessibleInterval<? extends ComplexType<?>> actual)
 	{
 		double psnr = Utils.psnr(expected, actual);
 		if(RevampUtils.containsNaN(expected))
