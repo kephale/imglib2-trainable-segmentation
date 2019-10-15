@@ -6,6 +6,7 @@ import net.imagej.ops.OpService;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.trainable_segmention.RevampUtils;
 import net.imglib2.trainable_segmention.pixel_feature.calculator.FeatureCalculator;
 import net.imglib2.trainable_segmention.pixel_feature.filter.dog.DifferenceOfGaussiansFeature;
 import net.imglib2.trainable_segmention.pixel_feature.filter.gauss.GaussFeature;
@@ -88,7 +89,7 @@ public class FeatureStack3DTest {
 
 	@Test
 	public void testLaplacian() {
-		testFeature(FeatureStack3D.LAPLACIAN, LaplacianFeature.class);
+		testFeature(25, FeatureStack3D.LAPLACIAN, GroupedFeatures.laplacian());
 	}
 
 	@Test
