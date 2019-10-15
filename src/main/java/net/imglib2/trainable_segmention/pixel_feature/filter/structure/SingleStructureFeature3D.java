@@ -70,7 +70,7 @@ public class SingleStructureFeature3D extends AbstractFeatureOp {
 		return Kernel1D.symmetric(Gauss3.halfkernels(new double[]{v})[0]);
 	}
 
-	private static void eigenValuePerPixel(EigenValues.Vector3D tmp, Composite<DoubleType> in, Composite<FloatType> out) {
+	static void eigenValuePerPixel(EigenValues.Vector3D tmp, Composite<DoubleType> in, Composite<FloatType> out) {
 		EigenValues.eigenvalues(tmp,
 				in.get(0).getRealDouble(),
 				in.get(1).getRealDouble(),
@@ -87,7 +87,7 @@ public class SingleStructureFeature3D extends AbstractFeatureOp {
 
 	private Img<DoubleType> products(Img<DoubleType> input) {
 		Interval interval = RevampUtils.removeLastDimension(input);
-		Img<DoubleType> output = ops().create().img(RevampUtils.appendDimensionToInterval(interval, 0, 6), new DoubleType());
+		Img<DoubleType> output = ops().create().img(RevampUtils.appendDimensionToInterval(interval, 0, 5), new DoubleType());
 		LoopBuilder.setImages( Views.collapse(input), Views.collapse(output)).forEachPixel( SingleStructureFeature3D::productPerPixel );
 		return output;
 	}
